@@ -60,12 +60,25 @@
             background-color: rgba(255, 255, 255, 0.2);
             z-index: -1;
         }
+
+        form {
+            display: inline;
+        }
+
+        button {
+            background-color: #55608f;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #37425b;
+        }
     </style>
 </head>
 <body>
- <h2>Delete All "Alice" Entries</h2>
-    <form action="/delete_alice" method="post">
-        <button type="submit">Delete All Alices</button>
     </form>
        {% if message %}
     <p>{{ message }}</p>
@@ -74,14 +87,27 @@
     <h2>Player List</h2>
     <div class="container">
     <table border="1">
-        <tr>
-            <th>Name</th>
-        </tr>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Wins</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for player in players %}
-        <tr>
-            <td>{{ player.name }}</td>
-        </tr>
+            <tr>
+                <td>{{ player.name }}</td>
+                <td>{{ player.wins }}</td>
+                <td>
+                    <form action="/delete_player" method="post">
+                        <input type="hidden" name="name" value="{{ player.name }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
         {% endfor %}
+        </tbody>
     </table>
     </div>
 </body>
