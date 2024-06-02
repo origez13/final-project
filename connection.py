@@ -10,7 +10,7 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 # MongoDB setup
-client = MongoClient('mongodb://root:origez12@localhost:27017/', serverSelectionTimeoutMS=5000)
+client = MongoClient('mongodb://root:origez12@mongodb:27017/', serverSelectionTimeoutMS=5000)
 
 # Access the admin database to verify the connection
 try:
@@ -71,4 +71,4 @@ async def delete_player(request: Request, name: str = Form(...)):
     return templates.TemplateResponse("home.html", {"request": request, "delete_message": delete_message, "players": players})
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: origez12
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi
+    depends_on:
+      - mongodb
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URI=mongodb://root:origez12@mongodb:27017/
+    volumes:
+      - .:/app
+    command: ["uvicorn", "connection:app", "--host", "0.0.0.0", "--port", "8000"]
+
+volumes:
+  mongodb_data:
