@@ -59,7 +59,7 @@ pipeline {
                     script {
                         withDockerRegistry(credentialsId: 'docker-hub') {
                             // Build and Push Maven Docker image
-                            sh "docker build -t ${DOCKER_IMAGE}:oriapp"
+                            sh "docker build -t ${DOCKER_IMAGE}:oriapp ."
                             sh "docker push ${DOCKER_IMAGE}:oriapp"
                         }
                     }
