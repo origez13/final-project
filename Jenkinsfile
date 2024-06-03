@@ -1,0 +1,70 @@
+pipeline {
+    agent {
+        kubernetes {
+            yaml '''
+            apiVersion: v1
+            kind: Pod
+            spec:
+              containers:
+              - name: maven
+                image: maven:alpine
+                command:
+                - cat
+                tty: true
+              - name: mongodb
+                image: mongo:latest
+                env:
+                - name: MONGO_INITDB_ROOT_USERNAME
+                  value: "root"
+                - name: MONGO_INITDB_ROOT_PASSWORD
+                  value: "origez12"
+                - name: MONGO_INITDB_DATABASE
+                  value: "mydb"
+                - name: HOST
+                  value: "localhost"
+              - name: ez-docker-helm-build
+                image: ezezeasy/ez-docker-helm-build:1.41
+                imagePullPolicy: Always
+                securityContext:
+                  privileged: true
+            '''
+        }
+    }
+
+    environment {
+        DOCKER_IMAGE = "origez12/project-app"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('maven version') {
+            steps {
+                container('maven') {
+                    sh 'mvn -version'
+                }
+            }
+        }
+
+        stage('Build and Push Docker Images') {
+            when {
+                branch 'main'
+            }
+            steps {
+                container('ez-docker-helm-build') {
+                    script {
+                        withDockerRegistry(credentialsId: 'docker-hub') {
+                            // Build and Push Maven Docker image
+                            sh "docker build -t ${DOCKER_IMAGE}:oriapp"
+                            sh "docker push ${DOCKER_IMAGE}:oriapp"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
