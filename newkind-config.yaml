@@ -1,0 +1,24 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  extraMounts:
+  - hostPath: C:\data\pv-data  # Ensure this directory exists on your host machine
+    containerPath: /data/pv-data/
+  extraPortMappings:
+  - containerPort: 30000
+    hostPort: 30000
+    listenAddress: "0.0.0.0"
+- role: worker
+  extraMounts:
+  - hostPath: C:\data\pv-data # Ensure this directory exists on your host machine
+    containerPath: /data/pv-data/
+  extraPortMappings:
+  #fastapi
+  - containerPort: 30006
+    hostPort: 8000
+    listenAddress: "0.0.0.0"
+  #grafana
+  - containerPort: 30004
+    hostPort: 3001
+    listenAddress: "0.0.0.0"

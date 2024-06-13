@@ -29,13 +29,7 @@ mycollection = mydb["mycollection"]
 async def read_root(request: Request):
     # Fetch all player documents from the collection
     players = list(mycollection.find({}, {"_id": 0, "name": 1, "wins": 1}))
-    return templates.TemplateResponse("home.html", {"request": request, "players": players})
-
-@app.get("/testinput", response_class=HTMLResponse)
-async def get_input(request: Request):
-    # Fetch all player documents from the collection
-    players = list(mycollection.find({}, {"_id": 0, "name": 1, "wins": 1}))
-    return templates.TemplateResponse("testinput.html", {"request": request, "players": players})
+    return templates.TemplateResponse("player_management.html", {"request": request, "players": players})
 
 @app.post("/add_player", response_class=HTMLResponse)
 async def add_player(request: Request, name: str = Form(...), wins: int = Form(...)):
@@ -50,7 +44,7 @@ async def add_player(request: Request, name: str = Form(...), wins: int = Form(.
 
     # Fetch all player documents from the collection
     players = list(mycollection.find({}, {"_id": 0, "name": 1, "wins": 1}))
-    return templates.TemplateResponse("testinput.html", {"request": request, "message": message, "players": players})
+    return templates.TemplateResponse("player_management.html", {"request": request, "message": message, "players": players})
 
 @app.post("/delete_player", response_class=HTMLResponse)
 async def delete_player(request: Request, name: str = Form(...)):
@@ -68,7 +62,7 @@ async def delete_player(request: Request, name: str = Form(...)):
 
     # Fetch all player documents from the collection
     players = list(mycollection.find({}, {"_id": 0, "name": 1, "wins": 1}))
-    return templates.TemplateResponse("home.html", {"request": request, "delete_message": delete_message, "players": players})
+    return templates.TemplateResponse("player_management.html", {"request": request, "delete_message": delete_message, "players": players})
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

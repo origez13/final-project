@@ -1,3 +1,4 @@
+# mongodb-pv-pvc.yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -7,6 +8,9 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
+  storageClassName: standard
+  hostPath:
+    path: "/data/pv-data"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -18,7 +22,9 @@ spec:
   resources:
     requests:
       storage: 1Gi
+  storageClassName: standard
 ---
+# mongodb-deployment-service.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -67,6 +73,7 @@ spec:
     port: 27017
     targetPort: 27017
 ---
+# fastapi-deployment-service.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -88,15 +95,21 @@ spec:
         image: origez12/project-app:oriapp  # Replace with your actual image
         ports:
         - containerPort: 8000
+        env:
+        - name: MONGODB_URI
+          value: "mongodb://root:origez12@mongodb:27017/mongodb"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: fastapi
+  name: fastapi-service
 spec:
+  type: NodePort
   selector:
     app: fastapi
   ports:
-  - protocol: TCP
+  - name: http
     port: 8000
     targetPort: 8000
+    nodePort: 30006
+    protocol: TCP
