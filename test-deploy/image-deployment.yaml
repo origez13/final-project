@@ -96,7 +96,7 @@ spec:
         app: fastapi
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "8000"  # Ensure this is a string
+        prometheus.io/port: "8000"
     spec:
       containers:
       - name: fastapi
