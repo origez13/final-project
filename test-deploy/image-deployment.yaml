@@ -40,6 +40,9 @@ spec:
     metadata:
       labels:
         app: mongodb
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: 27017
     spec:
       containers:
       - name: mongodb
@@ -89,6 +92,9 @@ spec:
     metadata:
       labels:
         app: fastapi
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
     spec:
       containers:
       - name: fastapi
