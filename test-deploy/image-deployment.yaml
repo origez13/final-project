@@ -1,4 +1,6 @@
-# mongodb-pv-pvc.yaml
+# combined-deployment.yaml
+
+# PersistentVolume and PersistentVolumeClaim for MongoDB
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -24,7 +26,7 @@ spec:
       storage: 1Gi
   storageClassName: standard
 ---
-# mongodb-deployment-service.yaml
+# Deployment and Service for MongoDB
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -42,7 +44,7 @@ spec:
         app: mongodb
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: 27017
+        prometheus.io/port: "27017"  # Ensure this is a string
     spec:
       containers:
       - name: mongodb
@@ -76,7 +78,7 @@ spec:
     port: 27017
     targetPort: 27017
 ---
-# fastapi-deployment-service.yaml
+# Deployment and Service for FastAPI
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -94,11 +96,11 @@ spec:
         app: fastapi
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "8000"
+        prometheus.io/port: "8000"  # Ensure this is a string
     spec:
       containers:
       - name: fastapi
-        image: origez12/project-app:oriapp  # Replace with your actual image
+        image: origez12/project-app:oriapp
         ports:
         - containerPort: 8000
         env:
