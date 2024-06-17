@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/origez13/final-project.git
     targetRevision: main
-    path: kubernetes
+    path: test-deploy
   destination:
     server: https://kubernetes.default.svc
     namespace: default

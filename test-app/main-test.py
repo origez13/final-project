@@ -7,10 +7,10 @@ from pymongo import MongoClient
 # Add the project directory to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from connection import app  # Import the FastAPI app from main.py
+from connection import app
 
 # Define the MongoDB URI for testing
-TEST_MONGO_URI = 'mongodb://localhost:27017/'  # Update URI to use Docker service name
+TEST_MONGO_URI = 'mongodb://localhost:27017/'
 
 
 @pytest.fixture
@@ -34,4 +34,4 @@ def setup_and_teardown_db():
 
 def test_home_page(client):
     response = client.get('/')
-    assert response.status_code == 200  # Ensure it responds with OK
+    assert response.status_code == 200

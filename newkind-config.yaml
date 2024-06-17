@@ -3,7 +3,7 @@ apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
   extraMounts:
-  - hostPath: C:\data\pv-data  # Ensure this directory exists on your host machine
+  - hostPath: C:\data\pv-data
     containerPath: /data/pv-data/
   extraPortMappings:
   - containerPort: 30000
@@ -11,7 +11,7 @@ nodes:
     listenAddress: "0.0.0.0"
 - role: worker
   extraMounts:
-  - hostPath: C:\data\pv-data # Ensure this directory exists on your host machine
+  - hostPath: C:\data\pv-data
     containerPath: /data/pv-data/
   extraPortMappings:
   #fastapi
